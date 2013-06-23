@@ -1,5 +1,6 @@
 SOURCES=$(wildcard *.jpg)
 OBJECTS=$(SOURCES:.jpg=.txt)
+TIFS=$(SOURCES:.jpg=.tif)
 
 .PHONY=doocr
 
@@ -10,3 +11,6 @@ doocr: $(OBJECTS)
 
 %.txt : %.tif
 	@tesseract $< $(@:.txt=) -l eng
+
+clean:
+	@rm $(OBJECTS)
