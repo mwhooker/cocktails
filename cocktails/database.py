@@ -1,4 +1,5 @@
 from cocktails.app import app
+from sqlalchemy.schema import UniqueConstraint
 from flask.ext.sqlalchemy import SQLAlchemy
 
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
@@ -7,18 +8,30 @@ db = SQLAlchemy(app)
 
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Integer)
+    name = db.Column(db.String(1023), unique=True)
 
 
-class Ingredient(db.Model):
+class Recipe(db.Model):
+    __table_args__ = (
+        UniqueConstraint('name', 'book_id'),
+    )
     id = db.Column(db.Integer, primary_key=True)
-    name = db.Column(db.Integer)
+    serving_size = db.Column(db.Integer, default=1)
+    name = db.Column(db.String(1023))
+    notes = db.Column(db.String(4095))
+
+    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
+    book = db.relationship('Book',
+        backref=db.backref('recipes', lazy='dynamic'))
+
 
 class Portion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    units = db.Column(db.Integer)
+    units = db.Column(db.Decimal)
     unit_type = db.Column(db.Enum('grams', 'dashes', 'parts',
                         name='employee_types'))
+
+    stet_unit = db.Column(db.String(255))
 
     ingredient_id = db.Column(db.Integer, db.ForeignKey('ingredient.id'))
     ingredient = db.relationship('Ingredient')
@@ -28,10 +41,7 @@ class Portion(db.Model):
         backref=db.backref('ingredients', lazy='dynamic'))
 
 
-class Recipe(db.Model):
+class Ingredient(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    serving_size = db.Column(db.Integer)
+    name = db.Column(db.String(255), unique=True)
 
-    book_id = db.Column(db.Integer, db.ForeignKey('book.id'))
-    book = db.relationship('Book',
-        backref=db.backref('recipes', lazy='dynamic'))
