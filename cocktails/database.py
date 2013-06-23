@@ -33,7 +33,7 @@ class Portion(db.Model):
     ingredient = db.relationship('Ingredient')
 
     recipe_id = db.Column(db.Integer, db.ForeignKey('recipe.id'))
-    recipe = db.relationship('Book',
+    recipe = db.relationship('Recipe',
         backref=db.backref('ingredients', lazy='dynamic'))
 
 
