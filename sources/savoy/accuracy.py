@@ -1,7 +1,9 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 from __future__ import division
 import sys
 import Levenshtein
+from subprocess import call
 
 
 """
@@ -15,8 +17,7 @@ Fourth Annual Test of OCR Accuracy
 the image, and m is the number of errors, or edit operations
 (insert, delete, and substitute) needed to transform the result from the OCR
 engine into the actual text in the image,
-the accuracy of the recognition is deﬁned as
-(n− m)/n (1)
+the accuracy of the recognition is deﬁned as (n - m) / n
 The upper bound on this metric is 100, a perfect recognition;
 there is no lower bound, as negative scores are possible when
 there are more errors than characters in the ground truth
@@ -28,13 +29,24 @@ the companion software to the ISRI’s 1999 book on OCR
 used in evaluating one’s build of the Tesseract system
 """
 
-with open('286-corrected.txt') as f:
-    truth_file = f.read()
+def score(inp):
+    with open('286-corrected.txt') as f:
+        truth_file = f.read()
 
-with open(sys.argv[1]) as f:
-    test_file = f.read()
+    with open(inp) as f:
+        test_file = f.read()
 
-n = len(truth_file)
-m = Levenshtein.distance(truth_file, test_file)
+    n = len(truth_file)
+    m = Levenshtein.distance(truth_file, test_file)
 
-print((n - m) / n)
+    return ((n - m) / n)
+
+def runtest():
+    outfile = '286tiff'
+    cmd = "tesseract 286.tif {outfile} -l eng".format(outfile=outfile)
+    call(cmd.split())
+    return score(outfile + '.txt')
+
+
+if __name__ == '__main__':
+    print(score(sys.argv[1]))
