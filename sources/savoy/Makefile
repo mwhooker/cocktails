@@ -6,4 +6,4 @@ OBJECTS=$(SOURCES:.jpg=.txt)
 doocr: $(OBJECTS)
 
 %.txt : %.jpg
-	@tesseract $< $(@:.txt=)
+	@tesseract $< $(@:.txt=) -l eng
