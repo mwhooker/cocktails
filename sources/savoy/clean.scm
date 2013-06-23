@@ -1,0 +1,10 @@
+ (define (simple-antialias filename outname)
+   (let* ((image (car (gimp-file-load RUN-NONINTERACTIVE filename filename)))
+          (drawable (car (gimp-image-get-active-layer image))))
+     (plug-in-sharpen RUN-NONINTERACTIVE image drawable 65)
+     (gimp-threshold drawable 132 255)
+     (plug-in-antialias RUN-NONINTERACTIVE image drawable)
+     (gimp-file-save RUN-NONINTERACTIVE image drawable outname outname)
+     (gimp-image-convert-indexed image 0 3 0 FALSE TRUE "")
+     (gimp-image-delete image)))
+
