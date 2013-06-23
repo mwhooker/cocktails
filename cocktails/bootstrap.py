@@ -1,5 +1,8 @@
-from cocktails.database import db
+from database import db
+
+def bstrap():
+    db.create_all()
 
 
 if __name__ == '__main__':
-    db.create_all()
+    bstrap()

@@ -1,9 +1,5 @@
-from cocktails.app import app
+from cocktails.web import db
 from sqlalchemy.schema import UniqueConstraint
-from flask.ext.sqlalchemy import SQLAlchemy
-
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:////tmp/test.db'
-db = SQLAlchemy(app)
 
 
 class Book(db.Model):
@@ -27,7 +23,7 @@ class Recipe(db.Model):
 
 class Portion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    units = db.Column(db.Decimal)
+    units = db.Column(db.Float(asdecimal=True))
     unit_type = db.Column(db.Enum('grams', 'dashes', 'parts',
                         name='employee_types'))
 
