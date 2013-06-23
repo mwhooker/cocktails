@@ -2,7 +2,7 @@
    (let* ((image (car (gimp-file-load RUN-NONINTERACTIVE filename filename)))
           (drawable (car (gimp-image-get-active-layer image))))
      (plug-in-sharpen RUN-NONINTERACTIVE image drawable 65)
-     (let* ((threshold (get-auto-threshold (get-hist drawable 0))))
+     (let* ((threshold (get-auto-threshold (get-hist drawable 5))))
          (gimp-threshold drawable threshold 255)
          (gimp-message (number->string threshold))
      )
