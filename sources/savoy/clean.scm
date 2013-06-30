@@ -1,3 +1,11 @@
+(define get-Type
+  (lambda (x)
+    (cond ((number? x) "Number")
+          ((pair? x) "Pair")
+          ((string? x) "String")
+          ((list? x) "List")))) 
+
+
  (define (simple-antialias filename outname)
    (let* ((image (car (gimp-file-load RUN-NONINTERACTIVE filename filename)))
           (drawable (car (gimp-image-get-active-layer image))))
@@ -8,8 +16,19 @@
      )
      (plug-in-antialias RUN-NONINTERACTIVE image drawable)
      (gimp-image-convert-indexed image 0 3 0 FALSE TRUE "")
+;     (savoy-slice image drawable)
      (gimp-file-save RUN-NONINTERACTIVE image drawable outname outname)
      (gimp-image-delete image)))
+
+(define (savoy-slice image drawable)
+  (script-fu-guide-new-percent RUN-NONINTERACTIVE image drawable 2 50)
+  (script-fu-guide-new-percent RUN-NONINTERACTIVE image drawable 1 50)
+  (let* ((sliced-images (plug-in-guillotine RUN-NONINTERACTIVE image drawable)))
+    (while 
+    ;(map  (lambda (x) (gimp-message (number->string x))) (vector->list (cdr sliced-images)))
+    ;(gimp-message (car (cdr sliced-images)))
+    (gimp-message (number->string (car sliced-images)))))
+
 
 ; http://stackoverflow.com/a/8462738/105571
 (define (auto-threshold imagePath)
