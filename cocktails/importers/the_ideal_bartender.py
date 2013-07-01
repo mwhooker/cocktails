@@ -44,8 +44,11 @@ def found_title(newtitle):
     title = newtitle
 
 def istitle(pre, cur, post):
-    return all([cur.isupper(), len(cur.split()) < 8,
-                len(pre) == 0, len(post) == 0])
+    if not len(cur):
+        return False
+    split = cur.split()
+    return all([split[0].isupper(), len(split) < 8,
+                not len(pre), not len(post)])
 
 
 
@@ -59,13 +62,12 @@ if __name__ == '__main__':
                 continue
 
             if not body:
-                body = cur
+                body = [cur]
             else:
-                body += cur
+                body.append(cur)
 
     print len(thebook)
-    print thebook[0]
-    print thebook[2]
+    print "\n".join(map(str, thebook))
 
 """
 
