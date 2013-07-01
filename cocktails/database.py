@@ -5,6 +5,8 @@ from sqlalchemy.schema import UniqueConstraint
 class Book(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     name = db.Column(db.String(1023), unique=True)
+    introduction = db.Column(db.String(4095), unique=True)
+    dedication = db.Column(db.String(4095), unique=True)
 
 
 class Recipe(db.Model):
