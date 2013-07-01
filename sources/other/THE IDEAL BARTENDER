@@ -2223,7 +2223,7 @@ Fill large Mixing glass 2/3 full fine Ice.
 
 1 tablespoonful Bar Sugar.
 
-Juice of 1 Lemon.\s+\d\d?
+Juice of 1 Lemon.?
 
 Fill up with Apollinaris or suitable Carbonated Water. Stir; strain into
 Lemonade glass; dress with Fruit and serve.
@@ -2238,7 +2238,7 @@ Use a large Mixing glass; fill with Lump Ice.
 1/3 Italian Vermouth.
 
 1/3 French Vermouth.
-\s+\d\d?
+
 Shake well; serve in Cocktail glass.
 
 
@@ -2307,7 +2307,7 @@ OJEN COCKTAIL
 Use an old-fashion Toddy glass.
 
 1 lump Ice.
-\s+\d\d?
+?
 Juice of 1/2 of a Lime.
 
 1 dash Angostura Bitters.
@@ -2331,7 +2331,7 @@ Three sprigs of fresh Mint.
 
 1/2 pony Orange Juice.
 
-1 jigger of Sir Robert Burnette's Old Tom Gin.\s+\d\d?
+1 jigger of Sir Robert Burnette's Old Tom Gin.?
 
 Crush ingredients together; fill with Lump Ice; add Seltzer. Stir well
 and serve.
@@ -2367,7 +2367,7 @@ Place large square of Ice in bowl; dress with the Fruits and serve Julep
 in fancy Stem glass.
 
 
-POLO PLAYERS' DELIGHT--Horse's Neck\s+\d\d?
+POLO PLAYERS' DELIGHT--Horse's Neck?
 
 Use a tall, thin glass.
 
