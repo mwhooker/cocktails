@@ -27,7 +27,7 @@ class Portion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     units = db.Column(db.Float(asdecimal=True))
     unit_type = db.Column(db.Enum('grams', 'dashes', 'parts',
-                        name='employee_types'))
+                        name='unit_types'))
 
     stet_unit = db.Column(db.String(255))
 

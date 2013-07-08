@@ -1,0 +1,9 @@
+{% extends "layout.html" %}
+{% block body %}
+<ul class="books">
+{% for book in books %}
+    <li><h2><a href="{{ url_for('book', bookid=book.id) }}">{{ book.name }}</a></h2>
+		<span>Dedicated to: {{ book.dedication}}</span></li>
+{% endfor %}
+</ul>
+{% endblock %}
