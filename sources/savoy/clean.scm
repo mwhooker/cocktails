@@ -6,9 +6,23 @@
           ((list? x) "List")))) 
 
 
+; other method
+; 1. take out red (?)
+; 2. greyscale (via mode->greyscale, desaturation, decomposition(CMY, LAB), or mode->indexed)
+; 3. threshold
+; 4. index
+; enhancements: sharpen, antialias; erode/dialate
+;
+; A. remove red; convert to greyscale; erode
+; B. remove red; convert to greyscale; erode; index
+; C. HMY decompose.
+; D. mode->grayscale; erode; threshold
+
+
  (define (simple-antialias filename outname)
    (let* ((image (car (gimp-file-load RUN-NONINTERACTIVE filename filename)))
           (drawable (car (gimp-image-get-active-layer image))))
+     ; TODO: grayscale it.
      (plug-in-sharpen RUN-NONINTERACTIVE image drawable 65)
      (let* ((threshold (get-auto-threshold (get-hist drawable 5))))
          (gimp-threshold drawable threshold 255)

@@ -1,15 +1,24 @@
+from __future__ import print_function
+
+from pyparsing import Regex, oneOf, OneOrMore, Word, alphas
 from collections import namedtuple
 import paths
 import os.path
-from itertools import imap, ifilter
 
 
 tib = os.path.join( paths.SOURCES_PATH, 'other/THE IDEAL BARTENDER')
 
+measures = ["jigger", "pony", "teaspoonful", "dash", "dashes", "jiggers",
+            "light dash", "yolk", "wineglass", "glass"]
+
+ingredient = Regex("[0-9 -/]+") + oneOf(measures, caseless=True) + OneOrMore(Word(alphas))
 
 keys = (s.upper() for s in ('dedicated', 'introduction'))
 
 Section = namedtuple('Section', ('title', 'body'))
+Recipe = namedtuple('Recipe', ('pre', 'ingredients', 'post'))
+Ingredient = namedtuple('Ingredient', ('portion', 'name'))
+Portion = namedtuple('Portion', ('units', 'unit'))
 
 thebook = []
 
@@ -27,20 +36,51 @@ def filter_book(f):
             if line != 'DEDICATED':
                 continue
             else:
-                # print "starting parse"
+                # print("starting parse")
                 started = True
 
         if line.startswith("***END OF THE PROJECT GUTENBERG EBOOK"):
-            # print "ending parse"
+            # print("ending parse")
             break
 
         if pre is not None:
             yield (pre, cur, post)
 
 
-def found_title(newtitle):
+def parse_ingredients(line):
+    #return Ingredient(spl[0], spl[1])
+    pass
+
+
+import sys
+i = 0
+def parse_body(body):
+    global i
+    pre, ingredients, post = [], [], []
+    b = Recipe(pre, ingredients, post)
+    if i > 2:
+        sys.exit()
+    i+=1
+    for line in body:
+        if not line[0].isdigit():
+            pre.append(line)
+        else:
+            ingredients.append(parse_ingredients(line))
+
+    print(b)
+    return b
+
+
+def found_title(newtitle=None):
+    """Commits previous title.
+
+    no argument means commit title and prepare to end processing.
+    """
     global title, body
     if title and len(body):
+        print(title)
+        if title not in ('DEDICATED', 'INTRODUCTION'):
+            body = parse_body(body)
         thebook.append(Section(title, body))
         body = []
     title = newtitle
@@ -71,32 +111,34 @@ if __name__ == '__main__':
             elif len(cur):
                 body.append(cur)
 
-        found_title(None)
+        found_title()
 
-    recipes = set(imap(
+    recipes = set(map(
         str.lower,
         (section.title for section in thebook))) - set(
             ['index', 'dedicated', 'introduction'])
 
-    index = set(imap(
+    index = set(map(
         str.lower,
-        ifilter(len, thebook[-1].body))) - set(['page'])
+        filter(len, thebook[-1].body.ingredients))) - set(['page'])
 
     if recipes != index:
-        print "***failure***\n"
-        print "differences: %s" % len(index.symmetric_difference(recipes))
-        print "index with no recipe found"
-        print index - recipes
-        print "recipes not found in the index"
-        print recipes - index
+        print("***failure***\n")
+        print("differences: %s" % len(index.symmetric_difference(recipes)))
+        print("index with no recipe found")
+        print(index - recipes)
+        print("recipes not found in the index")
+        print(recipes - index)
         assert False, "recipes and index don't match."
 
     for section in thebook:
-        print section.title
-        print "*" * len(section.title)
-        print ""
-        print '\n'.join(section.body)
-        print ""
+        print(section.title)
+        print("*" * len(section.title))
+        print("")
+        print('\n'.join(section.body.pre))
+        print('\n'.join(section.body.ingredients))
+        print('\n'.join(section.body.post))
+        print("")
 
 
 
