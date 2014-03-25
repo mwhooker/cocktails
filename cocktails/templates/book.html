@@ -1,0 +1,23 @@
+{% extends "layout.html" %}
+{% block body %}
+<div class="book-title">
+    <h2>{{ book.name }}</h2>
+ 	<span>Dedicated to: {{ book.dedication}}</span>
+</div>
+{% if book.introduction is defined %}
+<div class="book-section">
+	<h3>Introduction</h3>
+	<p>{{ book.introduction}}</p>
+</div>		
+{% endif %}
+{% if recipies is defined %}
+	<div class="book-section">		
+		<h3>Recipies</h3>
+		<ul class="recipe-list">
+			{% for recipe in recipies %}
+			<li>{{ recipe.name}} </li>
+			{% endfor %}
+		</ul>
+	</div>
+{% endif %}
+{% endblock %}

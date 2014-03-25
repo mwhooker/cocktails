@@ -1,0 +1,12 @@
+<!doctype html>
+<title>Cocktails</title>
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/normalize.css') }}">
+<link rel=stylesheet type=text/css href="{{ url_for('static', filename='css/style.css') }}">
+<div class="page fixed-width shadow">
+	<div id="nav">
+		<h1>Cocktails</h1>
+	</div>
+	<div id="body">
+	{% block body %}{% endblock %}
+	</div>
+</div>
